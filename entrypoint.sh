@@ -42,4 +42,6 @@ if [[ "$@" == "" ]] && [[ -f *.spec ]]; then
     chown -R --reference=. ./dist/windows
 elif [[ "$@" != "" ]]; then
     sh -c "$@"
+else 
+    echo ‘pyinstaller --version’
 fi # [[ "$@" == "" ]]
