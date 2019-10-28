@@ -37,7 +37,7 @@ fi # [ -f requirements.txt ]
 
 echo "$@"
 
-if [[ "$@" == "" ] && [-f *.spec]]; then
+if [[ "$@" == "" ] && [ -f *.spec ]]; then
     pyinstaller --clean -y --dist ./dist/windows --workpath /tmp *.spec
     chown -R --reference=. ./dist/windows
 elif [["$@" != ""]]; then
