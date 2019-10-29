@@ -94,9 +94,8 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 RUN pip install pyinstaller==$PYINSTALLER_VERSION
 
 COPY entrypoint.sh /entrypoint.sh
-COPY start.sh /start.sh
-RUN chmod +x /entrypoint.sh \
-    chmod +x /start.sh
+
+RUN chmod +x /entrypoint.sh
     
 EXPOSE 22
 
