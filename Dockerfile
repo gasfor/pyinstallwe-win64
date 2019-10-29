@@ -19,7 +19,8 @@ RUN set -x \
     && apt-get clean \
     && wget -nv https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
     && chmod +x winetricks \
-    && mv winetricks /usr/local/bin
+    && mv winetricks /usr/local/bin \
+    && apt-get update && apt-get install -y openssh-server --no-install-recommends
 
 # wine settings
 ENV WINEARCH win64
@@ -57,7 +58,11 @@ ENV W_DRIVE_C=/wine/drive_c
 ENV W_WINDIR_UNIX="$W_DRIVE_C/windows"
 ENV W_SYSTEM64_DLLS="$W_WINDIR_UNIX/system32"
 ENV W_TMP="$W_DRIVE_C/windows/temp/_$0"
-
+ENV \
+	SSH_USER="app-admin" \
+	SSH_USER_PASSWORD="app-admin" \
+	TZ="Asia/Shanghai"
+    
 # install Microsoft Visual C++ Redistributable for Visual Studio 2017 dll files
 RUN set -x \
     && rm -f "$W_TMP"/* \
@@ -75,9 +80,24 @@ VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
 
+#install and set openssh-server
+RUN mkdir /var/run/sshd
+RUN sed -i \
+	  -e 's~^PasswordAuthentication yes~PasswordAuthentication no~g' \
+	  -e 's~^#PermitRootLogin yes~PermitRootLogin no~g' \
+	  -e 's~^#UseDNS yes~UseDNS no~g' \
+	  -e 's~^\(.*\)/usr/libexec/openssh/sftp-server$~\1internal-sftp~g' \
+		/etc/ssh/sshd_config
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
 RUN pip install pyinstaller==$PYINSTALLER_VERSION
 
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY start.sh /start.sh
+RUN chmod +x /entrypoint.sh \
+    chmod +x /start.sh
+    
+EXPOSE 22
 
 ENTRYPOINT ["/entrypoint.sh"]
