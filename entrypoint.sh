@@ -37,11 +37,11 @@ fi # [ -f requirements.txt ]
 
 echo "$@"
 
-if [[ "$@" == "" ]] && [[ -f *.spec ]]; then
-    pyinstaller --clean -y --dist ./dist/windows --workpath /tmp *.spec
-    chown -R --reference=. ./dist/windows
-elif [[ "$@" != "" ]]; then
-    sh -c "$@"
+if [[ "$@" != "" ]]; then
+   sh -c "$@"
+elif [[ -f *.spec ]]; then
+   pyinstaller --clean -y --dist ./dist/windows --workpath /tmp *.spec
+   chown -R --reference=. ./dist/windows
 else 
-    echo ‘pyinstaller --version’
-fi # [[ "$@" == "" ]]
+   echo `pyinstaller --version`
+fi
