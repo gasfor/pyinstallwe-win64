@@ -54,7 +54,7 @@ RUN set -x \
     #install pip
     && wget https://bootstrap.pypa.io/get-pip.py \
     && python3 get-pip.py \
-    && rm -rf /tmp/.wine-* \
+    && rm -rf /tmp/.wine-*
 
 ENV W_DRIVE_C=/wine/drive_c
 ENV W_WINDIR_UNIX="$W_DRIVE_C/windows"
