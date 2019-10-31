@@ -51,11 +51,10 @@ RUN set -x \
     && echo 'ftype PythonScript=c:\Python36\python.exe "%1" %*' | wine cmd \
     && while pgrep wineserver >/dev/null; do echo "Waiting for wineserver"; sleep 1; done \
     && chmod +x /usr/bin/python /usr/bin/easy_install /usr/bin/pip /usr/bin/pyinstaller /usr/bin/pyupdater \
-    && (pip install -U pip || true) \
-    && rm -rf /tmp/.wine-* \
     #install pip
     && wget https://bootstrap.pypa.io/get-pip.py \
-    && python3 get-pip.py
+    && python3 get-pip.py \
+    && rm -rf /tmp/.wine-* \
 
 ENV W_DRIVE_C=/wine/drive_c
 ENV W_WINDIR_UNIX="$W_DRIVE_C/windows"
@@ -63,8 +62,7 @@ ENV W_SYSTEM64_DLLS="$W_WINDIR_UNIX/system32"
 ENV W_TMP="$W_DRIVE_C/windows/temp/_$0"
 ENV \
 	SSH_USER="app-admin" \
-	SSH_USER_PASSWORD="app-admin" \
-	TZ="Asia/Shanghai"
+	SSH_USER_PASSWORD="app-admin" 
     
 # install Microsoft Visual C++ Redistributable for Visual Studio 2017 dll files
 RUN set -x \
@@ -94,7 +92,11 @@ RUN sed -i \
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-RUN pip install pyinstaller
+RUN pip install pyinstaller \
+    # set time zone
+    && ln -sf /usr/share/zoneinfo/Asia/ShangHai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && dpkg-reconfigure -f noninteractive tzdata
 
 COPY entrypoint.sh /entrypoint.sh
 
