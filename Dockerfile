@@ -53,6 +53,9 @@ RUN set -x \
     && chmod +x /usr/bin/python /usr/bin/easy_install /usr/bin/pip /usr/bin/pyinstaller /usr/bin/pyupdater \
     && (pip install -U pip || true) \
     && rm -rf /tmp/.wine-*
+    #install pip
+    && wget https://bootstrap.pypa.io/get-pip.py
+    && python3 get-pip.py
 
 ENV W_DRIVE_C=/wine/drive_c
 ENV W_WINDIR_UNIX="$W_DRIVE_C/windows"
@@ -91,8 +94,7 @@ RUN sed -i \
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
-RUN python3 -m pip install -U pip \
-	&& pip install pyinstaller
+RUN pip install pyinstaller
 
 COPY entrypoint.sh /entrypoint.sh
 
