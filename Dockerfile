@@ -52,9 +52,9 @@ RUN set -x \
     && while pgrep wineserver >/dev/null; do echo "Waiting for wineserver"; sleep 1; done \
     && chmod +x /usr/bin/python /usr/bin/easy_install /usr/bin/pip /usr/bin/pyinstaller /usr/bin/pyupdater \
     && (pip install -U pip || true) \
-    && rm -rf /tmp/.wine-*
+    && rm -rf /tmp/.wine-* \
     #install pip
-    && wget https://bootstrap.pypa.io/get-pip.py
+    && wget https://bootstrap.pypa.io/get-pip.py \
     && python3 get-pip.py
 
 ENV W_DRIVE_C=/wine/drive_c
