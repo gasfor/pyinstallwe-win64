@@ -59,7 +59,7 @@ RUN set -x \
     && chmod +x /usr/bin/python /usr/bin/easy_install /usr/bin/pip /usr/bin/pyinstaller /usr/bin/pyupdater \
     #install pip
     && wget https://bootstrap.pypa.io/get-pip.py \
-    && python3 get-pip.py \
+    && python get-pip.py \
     && rm -rf /tmp/.wine-*
 
 ENV W_DRIVE_C=/wine/drive_c
