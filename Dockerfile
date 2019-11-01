@@ -38,6 +38,9 @@ ENV PYPI_INDEX_URL=https://pypi.python.org/simple
 # install python in wine, using the msi packages to install, extracting
 # the files directly, since installing isn't running correctly.
 RUN set -x \
+    #Remove python3.5.2 from ubuntu
+    && apt-get remove python3.5.2 \
+    && apt-get remove --auto-remove python3.5.2 \
     && winetricks win7 \
     && for msifile in `echo core dev exe lib path pip tcltk tools`; do \
         wget -nv "https://www.python.org/ftp/python/$PYTHON_VERSION/amd64/${msifile}.msi"; \
