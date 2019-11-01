@@ -20,7 +20,7 @@ RUN set -x \
     && wget -nv https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
     && chmod +x winetricks \
     && mv winetricks /usr/local/bin \
-    && apt-get update 
+    && apt-get update \
     && apt-get install -y openssh-server --no-install-recommends \
     #install time zone tool
     && apt-get install tzdata
