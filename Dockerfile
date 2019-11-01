@@ -20,7 +20,10 @@ RUN set -x \
     && wget -nv https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
     && chmod +x winetricks \
     && mv winetricks /usr/local/bin \
-    && apt-get update && apt-get install -y openssh-server --no-install-recommends
+    && apt-get update 
+    && apt-get install -y openssh-server --no-install-recommends \
+    #install time zone tool
+    && apt-get install tzdata
 
 # wine settings
 ENV WINEARCH win64
@@ -62,7 +65,8 @@ ENV W_SYSTEM64_DLLS="$W_WINDIR_UNIX/system32"
 ENV W_TMP="$W_DRIVE_C/windows/temp/_$0"
 ENV \
 	SSH_USER="app-admin" \
-	SSH_USER_PASSWORD="app-admin" 
+	SSH_USER_PASSWORD="app-admin" \
+	TZ=Asia/Shanghai
     
 # install Microsoft Visual C++ Redistributable for Visual Studio 2017 dll files
 RUN set -x \
@@ -94,8 +98,8 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 
 RUN pip install pyinstaller \
     # set time zone
-    && ln -sf /usr/share/zoneinfo/Asia/ShangHai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
+    && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo "$TZ" > /etc/timezone \
     && dpkg-reconfigure -f noninteractive tzdata
 
 COPY entrypoint.sh /entrypoint.sh
