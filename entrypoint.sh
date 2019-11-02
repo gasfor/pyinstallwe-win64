@@ -3,6 +3,11 @@
 # Fail on errors.
 set -e
 
+# Allow the workdir to be set using an env var.
+# Useful for CI pipelines which use docker for their build steps
+# and don't allow that much flexibility to mount volumes
+WORKDIR=${SRCDIR:-/src}
+
 #set user name\password and root password
 function __get_password ()
 {
@@ -68,7 +73,10 @@ function main ()
 	ssh_root_password="$(__get_password "${password_length}")"
 	if [[ ${ssh_user} != root ]]
 	then
+            i=`cat /etc/passwd | cut -f1 -d':' | grep -w "${ssh_user}" -c`
+            if [ $i -le 0 ]; then
 		useradd -m \
+                        -d "${WORKDIR}" \
 			"${ssh_user}"
 		printf -- \
 					'%s:%s\n' \
@@ -76,6 +84,7 @@ function main ()
 					"${ssh_user_password}" \
 				| chpasswd
 		echo -e "user name:${ssh_user} \n"
+             fi
 		echo -e "user password:${ssh_user_password} \n"
 	fi
 	printf -- \
@@ -88,11 +97,6 @@ function main ()
 
 # Make sure .bashrc is sourced
 . /root/.bashrc
-
-# Allow the workdir to be set using an env var.
-# Useful for CI pipelines which use docker for their build steps
-# and don't allow that much flexibility to mount volumes
-WORKDIR=${SRCDIR:-/src}
 
 #
 # In case the user specified a custom URL for PYPI, then use
