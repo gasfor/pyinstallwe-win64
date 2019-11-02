@@ -29,7 +29,6 @@ RUN set -x \
 ENV WINEARCH win64
 ENV WINEDEBUG fixme-all
 ENV WINEPREFIX /wine
-ENV DISPLAY=:0.0
 
 # PYPI repository location
 ENV PYPI_URL=https://pypi.python.org/
@@ -48,6 +47,7 @@ RUN set -x \
         wine msiexec /i "${msifile}.msi" /qb TARGETDIR=C:/Python36; \
         rm ${msifile}.msi; \
     done \
+    && export DISPLAY=:0 \
     && cd /wine/drive_c/Python36 \
     && echo 'wine /wine/drive_c/Python36/python.exe $@' > /usr/bin/python \
     && echo 'wine /wine/drive_c/Python36/Scripts/easy_install.exe $@' > /usr/bin/easy_install \
