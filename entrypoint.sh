@@ -80,6 +80,7 @@ function main ()
 		useradd -m \
                         -d "${WORKDIR}" \
 			"${ssh_user}"
+                chmod -R a+rwx ${WORKDIR}
 		printf -- \
 					'%s:%s\n' \
 					"${ssh_user}" \
