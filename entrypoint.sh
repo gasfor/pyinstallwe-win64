@@ -74,7 +74,9 @@ function main ()
 	if [[ ${ssh_user} != root ]]
 	then
             i=`cat /etc/passwd | cut -f1 -d':' | grep -w "${ssh_user}" -c`
-            if [ $i -le 0 ]; then
+            if [[ $i -le 0 ]]; then
+                echo "user name is not exist, add user"
+                echo "user home path:${WORKDIR}"
 		useradd -m \
                         -d "${WORKDIR}" \
 			"${ssh_user}"
