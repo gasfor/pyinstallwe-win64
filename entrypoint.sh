@@ -71,10 +71,10 @@ function main ()
 	)"}"
 	ssh_user="$(__get_ssh_user)"
 	ssh_root_password="$(__get_password "${password_length}")"
-	if [[ ${ssh_user} != root ]]
-	then
-            i=`cat /etc/passwd | cut -f1 -d':' | grep -w "${ssh_user}" -c`
-            if [[ $i -le 0 ]]; then
+	if [[ ${ssh_user} != root ]]; then
+            if [ id -u $ssh_user >/dev/null 2>&1 ]; then
+	    	echo "user name is exist, only output password"
+	    else
                 echo "user name is not exist, add user"
                 echo "user home path:${WORKDIR}"
 		useradd -m \
