@@ -79,6 +79,7 @@ function main ()
                 echo "user home path:${WORKDIR}"
 		useradd -m \
                         -d "${WORKDIR}" \
+                        -g buildgroup \
 			"${ssh_user}"
                 chmod -R a+rwx ${WORKDIR}
 		printf -- \
