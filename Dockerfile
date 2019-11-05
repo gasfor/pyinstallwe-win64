@@ -83,7 +83,9 @@ RUN set -x \
     && cp "$W_TMP"/*.dll "$W_SYSTEM64_DLLS"/
 
 # put the src folder inside wine
-RUN mkdir /src/ && ln -s /src /wine/drive_c/src
+RUN mkdir /src/ && ln -s /src /wine/drive_c/src \
+    && groupadd buildgroup \
+    && chgrp -R buildgroup /src
 VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
