@@ -48,11 +48,11 @@ RUN set -x \
         rm ${msifile}.msi; \
     done \
     && cd /wine/drive_c/Python36 \
-    && echo 'DISPLAY=:0 wine /wine/drive_c/Python36/python.exe $@' > /usr/bin/python \
-    && echo 'DISPLAY=:0 wine /wine/drive_c/Python36/Scripts/easy_install.exe $@' > /usr/bin/easy_install \
-    && echo 'DISPLAY=:0 wine /wine/drive_c/Python36/Scripts/pip.exe $@' > /usr/bin/pip \
-    && echo 'DISPLAY=:0 wine /wine/drive_c/Python36/Scripts/pyinstaller.exe $@' > /usr/bin/pyinstaller \
-    && echo 'DISPLAY=:0 wine /wine/drive_c/Python36/Scripts/pyupdater.exe $@' > /usr/bin/pyupdater \
+    && echo 'DISPLAY=:0 wine '\''C:\Python36\python.exe'\'' "$@"' > /usr/bin/python \
+    && echo 'DISPLAY=:0 wine '\''C:\Python36\Scripts\easy_install.exe'\'' "$@"' > /usr/bin/easy_install \
+    && echo 'DISPLAY=:0 wine '\''C:\Python36\Scripts\pip.exe'\'' "$@"' > /usr/bin/pip \
+    && echo 'DISPLAY=:0 wine '\''C:\Python36\Scripts\pyinstaller.exe'\'' "$@"' > /usr/bin/pyinstaller \
+    && echo 'DISPLAY=:0 wine '\''C:\Python36\Scripts\pyupdater.exe'\'' "$@"' > /usr/bin/pyupdater \
     && echo 'assoc .py=PythonScript' | wine cmd \
     && echo 'ftype PythonScript=c:\Python36\python.exe "%1" %*' | wine cmd \
     && while pgrep wineserver >/dev/null; do echo "Waiting for wineserver"; sleep 1; done \
