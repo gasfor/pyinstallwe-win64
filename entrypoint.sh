@@ -72,7 +72,7 @@ function main ()
 	ssh_user="$(__get_ssh_user)"
 	ssh_root_password="$(__get_password "${password_length}")"
 	if [[ ${ssh_user} != root ]]; then
-            if [[ id -u $ssh_user >/dev/null 2>&1 ]]; then
+            if [[ id -u ${ssh_user} >/dev/null 2>&1 ]]; then
 	    	echo "user name is exist, only output password"
 	    else
                 echo "user name is not exist, add user"
@@ -81,7 +81,7 @@ function main ()
                         -d "${WORKDIR}" \
                         -g buildgroup \
 			"${ssh_user}"
-                chmod -R a+rwx ${WORKDIR}
+                chown -R "${ssh_user}":buildgroup ${WORKDIR}
 		printf -- \
 					'%s:%s\n' \
 					"${ssh_user}" \
