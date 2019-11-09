@@ -85,7 +85,7 @@ RUN set -x \
 # put the src folder inside wine
 RUN mkdir /src/ && ln -s /src /wine/drive_c/src \
     && groupadd buildgroup \
-    && chgrp -R buildgroup /src
+    && chgrp -R buildgroup "$WINEPREFIX"
 VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
@@ -110,7 +110,10 @@ RUN pip install pyinstaller \
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
-    
+
+#import docker environment to ssh
+RUN echo 'export $(cat /proc/1/environ |tr '\0' '\n' | xargs)' >> /etc/profile
+
 EXPOSE 22
 
 ENTRYPOINT ["/entrypoint.sh"]
