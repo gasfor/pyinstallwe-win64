@@ -23,7 +23,8 @@ RUN set -x \
     && apt-get update \
     && apt-get install -y openssh-server --no-install-recommends \
     #install time zone tool
-    && apt-get install tzdata
+    && apt-get install tzdata \
+    && apt-get install sudo
 
 # wine settings
 ENV WINEARCH win64
