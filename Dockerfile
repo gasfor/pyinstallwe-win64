@@ -112,7 +112,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 #import docker environment to ssh
-RUN echo 'export $(cat /proc/1/environ |tr '\0' '\n' | xargs)' >> /etc/profile
+RUN sudo echo 'export $(cat /proc/1/environ |tr '\0' '\n' | xargs)' >> /etc/profile
 
 EXPOSE 22
 
