@@ -87,7 +87,7 @@ RUN set -x \
 RUN mkdir /src/ && ln -s /src /wine/drive_c/src \
     && groupadd buildgroup \
     && chgrp -R buildgroup "$WINEPREFIX" \
-    && echo -e "%buildgroup ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/promission
+    && echo "%buildgroup ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/promission
 VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
