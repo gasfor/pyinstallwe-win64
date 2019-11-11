@@ -80,6 +80,7 @@ function main ()
 		useradd -m \
                         -d "${WORKDIR}" \
                         -g buildgroup \
+                        -s /bin/bash \
 			"${ssh_user}"
                 chown -R "${ssh_user}":buildgroup ${WORKDIR}
 		printf -- \
@@ -97,6 +98,9 @@ function main ()
 			"${ssh_root_password}" \
 			| chpasswd
 	echo -e "root password:${ssh_root_password}"
+	#import docker environment to ssh
+	chsh -s /bin/bash root
+	export $(sudo cat /proc/1/environ |tr '\0' '\n' | xargs)
 }
 
 # Make sure .bashrc is sourced
