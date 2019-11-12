@@ -100,7 +100,6 @@ function main ()
 			| chpasswd
 	echo -e "root password:${ssh_root_password}"
 	#import docker environment to ssh
-	chsh -s /bin/bash root
 	export $(sudo cat /proc/1/environ |tr '\0' '\n' | xargs)
 }
 
