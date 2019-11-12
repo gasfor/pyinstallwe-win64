@@ -130,17 +130,6 @@ if [ -f requirements.txt ]; then
     pip install -r requirements.txt
 fi # [ -f requirements.txt ]
 
-echo "$@"
-
-if [[ "$@" != "" ]]; then
-   sh -c "$@"
-elif [[ -f *.spec ]]; then
-   pyinstaller --clean -y --dist ./dist/windows --workpath /tmp *.spec
-   chown -R --reference=. ./dist/windows
-else 
-   echo `pyinstaller --version`
-fi
-
 main "${@}"
 
 exec /usr/sbin/sshd -D
