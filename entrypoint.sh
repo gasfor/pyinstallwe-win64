@@ -83,6 +83,7 @@ function main ()
                         -s /bin/bash \
 			"${ssh_user}"
                 chown -R "${ssh_user}":buildgroup ${WORKDIR}
+                chown -R "${ssh_user}":buildgroup ${WINEPREFIX}
 		printf -- \
 					'%s:%s\n' \
 					"${ssh_user}" \
