@@ -78,7 +78,6 @@ function main ()
                 echo "user name is not exist, add user"
                 echo "user home path:${WORKDIR}"
 		useradd -m \
-                        -d "${WORKDIR}" \
                         -g buildgroup \
                         -s /bin/bash \
 			"${ssh_user}"
@@ -99,8 +98,6 @@ function main ()
 			"${ssh_root_password}" \
 			| chpasswd
 	echo -e "root password:${ssh_root_password}"
-	#import docker environment to ssh
-	export $(sudo cat /proc/1/environ |tr '\0' '\n' | xargs)
 }
 
 # Make sure .bashrc is sourced
