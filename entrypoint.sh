@@ -76,7 +76,7 @@ function main ()
 	    	echo "user name is exist, only output password"
 	    else
                 echo "user name is not exist, add user"
-                echo "user home path:${WORKDIR}"
+                echo "user work path:${WORKDIR}"
 		useradd -m \
                         -g wheel \
                         -s /bin/bash \
