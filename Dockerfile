@@ -85,9 +85,16 @@ RUN set -x \
 
 # put the src folder inside wine
 RUN mkdir /src/ && ln -s /src /wine/drive_c/src \
-    && groupadd buildgroup \
-    && chgrp -R buildgroup "$WINEPREFIX" \
-    && echo "%buildgroup ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/promission
+    && groupadd wheel \
+    && sed -i -e 's/^# auth       required   pam_wheel.so$ \
+                 /auth       required   pam_wheel.so group=wheel/' \
+              -e 's/^# auth       sufficient pam_wheel.so trust$ \
+                 /auth       sufficient pam_wheel.so trust/' /etc/pam.d/su
+                 
+#disable winemenubuilder
+RUN export WINEDEBUG=-all \
+    && export WINEDLLOVERRIDES=winemenubuilder.exe=d
+    
 VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp

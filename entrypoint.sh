@@ -78,11 +78,15 @@ function main ()
                 echo "user name is not exist, add user"
                 echo "user home path:${WORKDIR}"
 		useradd -m \
-                        -g buildgroup \
+                        -g wheel \
                         -s /bin/bash \
 			"${ssh_user}"
-                chown -R "${ssh_user}":buildgroup ${WORKDIR}
-                chown -R "${ssh_user}":buildgroup ${WINEPREFIX}
+                chown -R "${ssh_user}":wheel ${WINEPREFIX}
+                #get all environment variable
+                cat <<'EOF'>> /home/${ssh_user}/.bashrc
+                export $(su root -c "cat /proc/1/environ |tr '\0' '\n' | xargs")
+                EOF
+                echo "cd ${WORKDIR}" >> /home/${ssh_user}/.bashrc
 		printf -- \
 					'%s:%s\n' \
 					"${ssh_user}" \
