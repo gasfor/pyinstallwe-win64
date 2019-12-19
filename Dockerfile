@@ -112,14 +112,14 @@ RUN pip install pyinstaller \
     && dpkg-reconfigure -f noninteractive tzdata
 
 #get all variable,this is for login
-RUN echo 'export $(su root -c "cat /proc/1/environ |tr '\''\0'\'' '\''\n'\'' | xargs")' >> /etc/profile
+RUN echo 'export $(su root -c "cat /proc/1/environ |tr '\''\0'\'' '\''\n'\'' | xargs")' >> /etc/profile \
     #disable winemenubuilder
-    && echo 'export WINEDEBUG=-all' >> /etc/profile
-    && echo 'export WINEDLLOVERRIDES=winemenubuilder.exe=d' >> /etc/profile
+    && echo 'export WINEDEBUG=-all' >> /etc/profile \
+    && echo 'export WINEDLLOVERRIDES=winemenubuilder.exe=d' >> /etc/profile \
     #get all variable,this is for non-login + interactive.eg:Xshell
-    && echo 'export $(su root -c "cat /proc/1/environ |tr '\''\0'\'' '\''\n'\'' | xargs")' >> /etc/bash.bashrc
+    && echo 'export $(su root -c "cat /proc/1/environ |tr '\''\0'\'' '\''\n'\'' | xargs")' >> /etc/bash.bashrc \
     #disable winemenubuilder
-    && echo 'export WINEDEBUG=-all' >> /etc/bash.bashrc
+    && echo 'export WINEDEBUG=-all' >> /etc/bash.bashrc \
     && echo 'export WINEDLLOVERRIDES=winemenubuilder.exe=d' >> /etc/bash.bashrc
 
 COPY entrypoint.sh /entrypoint.sh
